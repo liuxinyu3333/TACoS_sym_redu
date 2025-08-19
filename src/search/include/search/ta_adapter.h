@@ -35,11 +35,13 @@ using TAState = PlantState<automata::ta::Location<LocationT>>;
 template <typename LocationT,
           typename ActionType,
           typename ConstraintSymbolType,
-          bool use_location_constraints>
+          bool use_location_constraints,
+		  bool use_set_semantics>
 class get_next_canonical_words<automata::ta::TimedAutomaton<LocationT, ActionType>,
                                ActionType,
                                ConstraintSymbolType,
-                               use_location_constraints>
+                               use_location_constraints,
+							   use_set_semantics>
 {
 public:
 	/** Construct the comparator with the given action partitioning.
@@ -47,9 +49,14 @@ public:
 	 * @param environment_actions The actions that the environment can select
 	 */
 	get_next_canonical_words([[maybe_unused]] const std::set<ActionType> &controller_actions  = {},
-	                         [[maybe_unused]] const std::set<ActionType> &environment_actions = {})
+	                         [[maybe_unused]] const std::set<ActionType> &environment_actions = {},
+							 [[maybe_unused]] const std::set<ActionType> &symbols = {})
+							 : symbols(symbols)
+							 
 	{
 	}
+
+	
 	/** Get the next canonical words. */
 	std::multimap<
 	  ActionType,
@@ -75,12 +82,42 @@ public:
 		  CanonicalABWord<typename automata::ta::TimedAutomaton<LocationT, ActionType>::Location,
 		                  ConstraintSymbolType>>
 		  successors;
-		for (const auto &symbol : ta.get_alphabet()) {
+
+
+		  //std::cout<<"传进来的参数 symbols："<<std::endl;
+
+		  for(const auto &s :symbols){
+			std::cout<<"action:  "<<s<<std::endl;
+		  }
+		std::set<ActionType> alphates;
+		if (!symbols.empty()){
+			alphates = symbols;
+		}else{
+			alphates = ta.get_alphabet();
+		}
+		
+		for (const auto &symbol : alphates) {
+			// std::cout<<"  "<<std::endl;
+			// std::cout<<"action:  "<<symbol<<std::endl;
 			SPDLOG_TRACE("({}, {}): Symbol {}", ab_configuration.first, ab_configuration.second, symbol);
 			const std::set<typename automata::ta::TimedAutomaton<LocationT, ActionType>::Configuration>
 			  ta_successors = ta.make_symbol_step(ab_configuration.first, symbol);
+
+			//std::cout<<ab_configuration.first<<std::endl;
+            // // ATA侧：先将 symbol（假设类型为std::string）转换为字符串，然后根据 action_map转换
+            // std::string symbol_str = symbol; // 假设 ActionType 可转换为 std::string
+            // tacos::logic::AtomicProposition<std::string> ata_symbol(symbol_str);
+            // auto it = action_map.find(symbol_str);
+            // if (it != action_map.end()) {
+            //     ata_symbol = it->second;
+            // }
+
+
+
+
 			std::set<ATAConfiguration<ConstraintSymbolType>> ata_successors;
 			if constexpr (!use_location_constraints) {
+				//ata_successors = ata.make_symbol_step(ab_configuration.second, ata_symbol);
 				ata_successors = ata.make_symbol_step(ab_configuration.second, symbol);
 			}
 			SPDLOG_TRACE("({}, {}): TA successors: {} ATA successors: {}",
@@ -114,6 +151,10 @@ public:
 		}
 		return successors;
 	}
+
+	private:
+
+    const std::set<ActionType> symbols;
 };
 
 } // namespace tacos::search

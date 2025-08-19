@@ -144,6 +144,29 @@ public:
 	           const SymbolT                      &symbol,
 	           std::unique_ptr<Formula<LocationT>> formula);
 
+	/** Get the formula of the transition.
+	 * @return A const reference to the formula of the transition
+	 */
+	[[nodiscard]] const Formula<LocationT>* 
+	getFormula() const {
+		return formula_.get();
+	}
+	[[nodiscard]] const std::unique_ptr<Formula<LocationT>>
+	get_uni_Formula() const {
+		return formula_->clone();
+	}
+	void printSourceAndSymbol() const {
+		std::cout << "source: " << source_ << " symbol: " << symbol_ << std::endl;
+	}
+
+	std::unique_ptr<Transition> clone() const {
+		return std::make_unique<Transition>(
+		  source_,          // 拷贝 source_
+		  symbol_,          // 拷贝 symbol_
+		  formula_ ? formula_->clone() : nullptr  // 拷贝／clone 子公式
+		);
+	}
+
 public:
 	/// The source location of the transition
 	const LocationT source_;
@@ -151,6 +174,9 @@ public:
 	const SymbolT symbol_;
 
 private:
+
+
+
 	std::unique_ptr<Formula<LocationT>> formula_;
 };
 
@@ -241,6 +267,38 @@ public:
 	friend std::ostream &
 	operator<< <>(std::ostream &os, const AlternatingTimedAutomaton &ata);
 	// clang-format on
+
+	/** Get the sink location.
+	 * @return The sink location of the automaton
+	 */
+	[[nodiscard]] std::optional<LocationT> 
+	get_sink_location() const {
+		return sink_location_;
+	}
+
+	/** Get the transitions of the automaton.
+	 * @return The set of transitions of the automaton
+	 */
+	[[nodiscard]] const std::set<Transition<LocationT, SymbolT>>& 
+	get_transitions() const {
+		return transitions_;
+	}
+
+	/** Get the initial location of the automaton.
+	 * @return The initial location of the automaton
+	 */
+	[[nodiscard]] const LocationT& 
+	get_initial_location() const {
+		return initial_location_;
+	}
+
+	/** Get the final locations of the automaton.
+	 * @return The set of final locations of the automaton
+	 */
+	[[nodiscard]] const std::set<LocationT>& 
+	get_final_locations() const {
+		return final_locations_;
+	}
 
 private:
 	std::set<std::set<State<LocationT>>> get_minimal_models(Formula<LocationT> *formula,

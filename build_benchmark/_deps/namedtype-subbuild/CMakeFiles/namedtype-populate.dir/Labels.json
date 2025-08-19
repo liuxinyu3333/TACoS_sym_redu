@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/CMakeFiles/namedtype-populate"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/CMakeFiles/namedtype-populate.rule"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/CMakeFiles/namedtype-populate-complete.rule"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/namedtype-populate-prefix/src/namedtype-populate-stamp/namedtype-populate-build.rule"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/namedtype-populate-prefix/src/namedtype-populate-stamp/namedtype-populate-configure.rule"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/namedtype-populate-prefix/src/namedtype-populate-stamp/namedtype-populate-download.rule"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/namedtype-populate-prefix/src/namedtype-populate-stamp/namedtype-populate-install.rule"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/namedtype-populate-prefix/src/namedtype-populate-stamp/namedtype-populate-mkdir.rule"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/namedtype-populate-prefix/src/namedtype-populate-stamp/namedtype-populate-patch.rule"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/namedtype-populate-prefix/src/namedtype-populate-stamp/namedtype-populate-test.rule"
+		},
+		{
+			"file" : "/home/xinyuliu/tacos/build_benchmark/_deps/namedtype-subbuild/namedtype-populate-prefix/src/namedtype-populate-stamp/namedtype-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"namedtype-populate"
+		],
+		"name" : "namedtype-populate"
+	}
+}

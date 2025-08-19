@@ -117,6 +117,7 @@ public:
 	virtual std::set<std::set<State<LocationT>>>
 	get_minimal_models(const ClockValuation &v) const = 0;
 
+	virtual std::unique_ptr<Formula> clone() const = 0;
 	// clang-format off
 	friend std::ostream & operator<< <>(std::ostream &os, const Formula &formula);
 	// clang-format on
@@ -138,7 +139,10 @@ class TrueFormula : public Formula<LocationT>
 public:
 	bool is_satisfied(const std::set<State<LocationT>> &, const ClockValuation &) const override;
 	std::set<std::set<State<LocationT>>> get_minimal_models(const ClockValuation &) const override;
-
+	std::unique_ptr<Formula<LocationT>> clone() const override {
+		// 直接拷贝自身
+		return std::make_unique<TrueFormula<LocationT>>();
+	}
 protected:
 	/** Print a TrueFormula to an ostream
 	 * @param os The ostream to print to
@@ -153,7 +157,10 @@ class FalseFormula : public Formula<LocationT>
 public:
 	bool is_satisfied(const std::set<State<LocationT>> &, const ClockValuation &) const override;
 	std::set<std::set<State<LocationT>>> get_minimal_models(const ClockValuation &) const override;
-
+	std::unique_ptr<Formula<LocationT>> clone() const override {
+		// 直接拷贝自身
+		return std::make_unique<FalseFormula<LocationT>>();
+	}
 protected:
 	/** Print a FalseFormula to an ostream
 	 * @param os The ostream to print to
@@ -177,6 +184,11 @@ public:
 	bool                                 is_satisfied(const std::set<State<LocationT>> &states,
 	                                                  const ClockValuation             &v) const override;
 	std::set<std::set<State<LocationT>>> get_minimal_models(const ClockValuation &v) const override;
+	std::unique_ptr<Formula<LocationT>> clone() const override {
+		// 直接拷贝自身
+		return std::make_unique<LocationFormula<LocationT>>(location_);
+	}
+	const LocationT& get_location() const { return location_; }
 
 protected:
 	/** Print a LocationFormula to an ostream
@@ -205,6 +217,11 @@ public:
 	}
 	bool is_satisfied(const std::set<State<LocationT>> &, const ClockValuation &v) const override;
 	std::set<std::set<State<LocationT>>> get_minimal_models(const ClockValuation &v) const override;
+	const ClockConstraint& getConstraint() const { return constraint_; }
+	std::unique_ptr<Formula<LocationT>> clone() const override {
+		// 直接拷贝自身
+		return std::make_unique<ClockConstraintFormula<LocationT>>(constraint_);
+	}
 
 protected:
 	/** Print a ClockConstraintFormula to an ostream
@@ -234,11 +251,21 @@ public:
 	: conjunct1_(std::move(conjunct1)), conjunct2_(std::move(conjunct2))
 	{
 	}
-
+	std::unique_ptr<Formula<LocationT>> clone() const override {
+		// 递归地 clone 子公式
+		return std::make_unique<ConjunctionFormula<LocationT>>(
+		  conjunct1_->clone(),
+		  conjunct2_->clone()
+		);
+	}
 	bool is_satisfied(const std::set<State<LocationT>> &states,
 	                  const ClockValuation             &v) const override;
 
 	std::set<std::set<State<LocationT>>> get_minimal_models(const ClockValuation &v) const override;
+	const std::unique_ptr<Formula<LocationT>>& getConjunct1() const { return conjunct1_; }
+	const std::unique_ptr<Formula<LocationT>>& getConjunct2() const { return conjunct2_; }
+
+
 
 protected:
 	/** Print a ConjunctionFormula to an ostream
@@ -273,6 +300,17 @@ public:
 	bool                                 is_satisfied(const std::set<State<LocationT>> &states,
 	                                                  const ClockValuation             &v) const override;
 	std::set<std::set<State<LocationT>>> get_minimal_models(const ClockValuation &v) const override;
+	const std::unique_ptr<Formula<LocationT>>& getDisjunct1() const { return disjunct1_; }
+	const std::unique_ptr<Formula<LocationT>>& getDisjunct2() const { return disjunct2_; }
+// 对于 DisjunctionFormula 类似
+	std::unique_ptr<Formula<LocationT>> clone() const override {
+    // 递归地 clone 子公式
+		return std::make_unique<DisjunctionFormula<LocationT>>(
+			disjunct1_->clone(),
+			disjunct2_->clone()
+		);
+	}
+
 
 protected:
 	/** Print a DisjunctionFormula to an ostream
@@ -304,6 +342,11 @@ public:
 	bool                                 is_satisfied(const std::set<State<LocationT>> &states,
 	                                                  const ClockValuation &) const override;
 	std::set<std::set<State<LocationT>>> get_minimal_models(const ClockValuation &) const override;
+	const std::unique_ptr<Formula<LocationT>>& getSubFormula() const { return sub_formula_; }
+	std::unique_ptr<Formula<LocationT>> clone() const override {
+		// 直接拷贝自身
+		return std::make_unique<ResetClockFormula<LocationT>>(sub_formula_->clone());
+	}
 
 protected:
 	/** Print a ResetClockFormula to an ostream

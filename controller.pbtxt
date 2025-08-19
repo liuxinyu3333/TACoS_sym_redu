@@ -1,0 +1,419 @@
+locations: "{ [ { ((CLOSED, BEHIND), c, 4), ((CLOSED, BEHIND), t, 0) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), c, 4), ((CLOSED, BEHIND), t, 0), (sink, 0) } ] }"
+locations: "{ [ { ((CLOSED, BEHIND), t, 0) }, { ((CLOSED, BEHIND), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), t, 0), (sink, 0) }, { ((CLOSED, BEHIND), c, 3) } ] }"
+locations: "{ [ { ((CLOSED, BEHIND), t, 0) }, { ((CLOSED, BEHIND), c, 5), ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), t, 0), (sink, 0) }, { ((CLOSED, BEHIND), c, 5) } ] }"
+locations: "{ [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((start_open ~U !(leave)), 3) } ], [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((travel ~U !(finish_open)), 3) } ], [ { ((CLOSED, FAR), c, 0), (sink, 0) }, { ((CLOSED, FAR), t, 3) } ] }"
+locations: "{ [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 5) } ], [ { ((CLOSED, FAR), c, 0), (sink, 0) }, { ((CLOSED, FAR), t, 5) } ] }"
+locations: "{ [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0), (sink, 0) } ] }"
+locations: "{ [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 1) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 1) } ] }"
+locations: "{ [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 3) } ] }"
+locations: "{ [ { ((CLOSED, IN), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, IN), c, 1) } ], [ { ((CLOSED, IN), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, IN), c, 1) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 1) } ] }"
+locations: "{ [ { ((CLOSED, NEAR), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), (sink, 0) }, { ((CLOSED, NEAR), c, 1) } ] }"
+locations: "{ [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), (((enter \342\210\250 (\342\212\244 U[0, 1] enter)) ~U !(finish_close)), 1) } ], [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), ((start_open ~U !(leave)), 1) } ], [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), ((travel ~U !(finish_open)), 1) } ] }"
+locations: "{ [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 5) } ], [ { ((CLOSING, FAR), c, 0), (sink, 0) }, { ((CLOSING, FAR), t, 5) } ] }"
+locations: "{ [ { ((OPEN, BEHIND), c, 0), (sink, 0) }, { ((OPEN, BEHIND), t, 3) } ] }"
+locations: "{ [ { ((OPEN, FAR), c, 0) }, { ((OPEN, FAR), t, 5) } ], [ { ((OPEN, FAR), c, 0), (sink, 0) }, { ((OPEN, FAR), t, 5) } ] }"
+locations: "{ [ { ((OPEN, FAR), c, 0), ((OPEN, FAR), t, 0), (l0, 0) } ] }"
+locations: "{ [ { ((OPENING, BEHIND), c, 0) }, { ((OPENING, BEHIND), t, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, BEHIND), c, 0), (sink, 0) }, { ((OPENING, BEHIND), t, 1) } ] }"
+locations: "{ [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5) } ], [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5), ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, FAR), c, 0), (sink, 0) }, { ((OPENING, FAR), t, 5) } ] }"
+locations: "{ [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5) } ], [ { ((OPENING, FAR), c, 0), (sink, 0) }, { ((OPENING, FAR), t, 5) } ] }"
+alphabet: "enter"
+alphabet: "finish_close"
+alphabet: "finish_open"
+alphabet: "get_near"
+alphabet: "leave"
+alphabet: "start_close"
+alphabet: "start_open"
+initial_location: "{ [ { ((OPEN, FAR), c, 0), ((OPEN, FAR), t, 0), (l0, 0) } ] }"
+final_locations: "{ [ { ((CLOSED, BEHIND), c, 4), ((CLOSED, BEHIND), t, 0) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), c, 4), ((CLOSED, BEHIND), t, 0), (sink, 0) } ] }"
+final_locations: "{ [ { ((CLOSED, BEHIND), t, 0) }, { ((CLOSED, BEHIND), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), t, 0), (sink, 0) }, { ((CLOSED, BEHIND), c, 3) } ] }"
+final_locations: "{ [ { ((CLOSED, BEHIND), t, 0) }, { ((CLOSED, BEHIND), c, 5), ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), t, 0), (sink, 0) }, { ((CLOSED, BEHIND), c, 5) } ] }"
+final_locations: "{ [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((start_open ~U !(leave)), 3) } ], [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((travel ~U !(finish_open)), 3) } ], [ { ((CLOSED, FAR), c, 0), (sink, 0) }, { ((CLOSED, FAR), t, 3) } ] }"
+final_locations: "{ [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 5) } ], [ { ((CLOSED, FAR), c, 0), (sink, 0) }, { ((CLOSED, FAR), t, 5) } ] }"
+final_locations: "{ [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0), (sink, 0) } ] }"
+final_locations: "{ [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 1) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 1) } ] }"
+final_locations: "{ [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 3) } ] }"
+final_locations: "{ [ { ((CLOSED, IN), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, IN), c, 1) } ], [ { ((CLOSED, IN), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, IN), c, 1) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 1) } ] }"
+final_locations: "{ [ { ((CLOSED, NEAR), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), (sink, 0) }, { ((CLOSED, NEAR), c, 1) } ] }"
+final_locations: "{ [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), (((enter \342\210\250 (\342\212\244 U[0, 1] enter)) ~U !(finish_close)), 1) } ], [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), ((start_open ~U !(leave)), 1) } ], [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), ((travel ~U !(finish_open)), 1) } ] }"
+final_locations: "{ [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 5) } ], [ { ((CLOSING, FAR), c, 0), (sink, 0) }, { ((CLOSING, FAR), t, 5) } ] }"
+final_locations: "{ [ { ((OPEN, BEHIND), c, 0), (sink, 0) }, { ((OPEN, BEHIND), t, 3) } ] }"
+final_locations: "{ [ { ((OPEN, FAR), c, 0) }, { ((OPEN, FAR), t, 5) } ], [ { ((OPEN, FAR), c, 0), (sink, 0) }, { ((OPEN, FAR), t, 5) } ] }"
+final_locations: "{ [ { ((OPENING, BEHIND), c, 0) }, { ((OPENING, BEHIND), t, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, BEHIND), c, 0), (sink, 0) }, { ((OPENING, BEHIND), t, 1) } ] }"
+final_locations: "{ [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5) } ], [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5), ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, FAR), c, 0), (sink, 0) }, { ((OPENING, FAR), t, 5) } ] }"
+final_locations: "{ [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5) } ], [ { ((OPENING, FAR), c, 0), (sink, 0) }, { ((OPENING, FAR), t, 5) } ] }"
+clocks: "c"
+clocks: "t"
+transitions {
+  source: "{ [ { ((CLOSED, BEHIND), c, 4), ((CLOSED, BEHIND), t, 0) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), c, 4), ((CLOSED, BEHIND), t, 0), (sink, 0) } ] }"
+  target: "{ [ { ((OPENING, BEHIND), c, 0) }, { ((OPENING, BEHIND), t, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, BEHIND), c, 0), (sink, 0) }, { ((OPENING, BEHIND), t, 1) } ] }"
+  symbol: "start_open"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+    comparand: 2
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "t"
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, BEHIND), t, 0) }, { ((CLOSED, BEHIND), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), t, 0), (sink, 0) }, { ((CLOSED, BEHIND), c, 3) } ] }"
+  target: "{ [ { ((OPENING, BEHIND), c, 0) }, { ((OPENING, BEHIND), t, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, BEHIND), c, 0), (sink, 0) }, { ((OPENING, BEHIND), t, 1) } ] }"
+  symbol: "start_open"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "c"
+    comparand: 2
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "t"
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, BEHIND), t, 0) }, { ((CLOSED, BEHIND), c, 5), ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), t, 0), (sink, 0) }, { ((CLOSED, BEHIND), c, 5) } ] }"
+  target: "{ [ { ((OPENING, BEHIND), c, 0) }, { ((OPENING, BEHIND), t, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, BEHIND), c, 0), (sink, 0) }, { ((OPENING, BEHIND), t, 1) } ] }"
+  symbol: "start_open"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+    comparand: 2
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "t"
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((start_open ~U !(leave)), 3) } ], [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((travel ~U !(finish_open)), 3) } ], [ { ((CLOSED, FAR), c, 0), (sink, 0) }, { ((CLOSED, FAR), t, 3) } ] }"
+  target: "{ [ { ((CLOSED, NEAR), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), (sink, 0) }, { ((CLOSED, NEAR), c, 1) } ] }"
+  symbol: "get_near"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "c"
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: EQUAL_TO
+    comparand: 2
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((start_open ~U !(leave)), 3) } ], [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((travel ~U !(finish_open)), 3) } ], [ { ((CLOSED, FAR), c, 0), (sink, 0) }, { ((CLOSED, FAR), t, 3) } ] }"
+  target: "{ [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5) } ], [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5), ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, FAR), c, 0), (sink, 0) }, { ((OPENING, FAR), t, 5) } ] }"
+  symbol: "start_open"
+  clock_constraints {
+    clock: "c"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+    comparand: 2
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 5) } ], [ { ((CLOSED, FAR), c, 0), (sink, 0) }, { ((CLOSED, FAR), t, 5) } ] }"
+  target: "{ [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5) } ], [ { ((OPENING, FAR), c, 0), (sink, 0) }, { ((OPENING, FAR), t, 5) } ] }"
+  symbol: "start_open"
+  clock_constraints {
+    clock: "c"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+    comparand: 2
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0), (sink, 0) } ] }"
+  target: "{ [ { ((CLOSED, BEHIND), c, 4), ((CLOSED, BEHIND), t, 0) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), c, 4), ((CLOSED, BEHIND), t, 0), (sink, 0) } ] }"
+  symbol: "leave"
+  clock_constraints {
+    clock: "c"
+    operand: EQUAL_TO
+    comparand: 2
+  }
+  clock_constraints {
+    clock: "t"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 1) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 1) } ] }"
+  target: "{ [ { ((CLOSED, BEHIND), t, 0) }, { ((CLOSED, BEHIND), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), t, 0), (sink, 0) }, { ((CLOSED, BEHIND), c, 3) } ] }"
+  symbol: "leave"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "c"
+    comparand: 2
+  }
+  clock_constraints {
+    clock: "t"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 3) } ] }"
+  target: "{ [ { ((CLOSED, BEHIND), t, 0) }, { ((CLOSED, BEHIND), c, 5), ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), t, 0), (sink, 0) }, { ((CLOSED, BEHIND), c, 5) } ] }"
+  symbol: "leave"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+    comparand: 2
+  }
+  clock_constraints {
+    clock: "t"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, IN), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, IN), c, 1) } ], [ { ((CLOSED, IN), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, IN), c, 1) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 1) } ] }"
+  target: "{ [ { ((CLOSED, BEHIND), t, 0) }, { ((CLOSED, BEHIND), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, BEHIND), t, 0), (sink, 0) }, { ((CLOSED, BEHIND), c, 3) } ] }"
+  symbol: "leave"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "c"
+    comparand: 2
+  }
+  clock_constraints {
+    clock: "t"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, NEAR), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), (sink, 0) }, { ((CLOSED, NEAR), c, 1) } ] }"
+  target: "{ [ { ((CLOSED, IN), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, IN), c, 1) } ], [ { ((CLOSED, IN), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, IN), c, 1) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 1) } ] }"
+  symbol: "enter"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "c"
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: EQUAL_TO
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, NEAR), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), (sink, 0) }, { ((CLOSED, NEAR), c, 1) } ] }"
+  target: "{ [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 1) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 1) } ] }"
+  symbol: "enter"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "c"
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "t"
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, NEAR), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), (sink, 0) }, { ((CLOSED, NEAR), c, 1) } ] }"
+  target: "{ [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), c, 2), ((CLOSED, IN), t, 0), (sink, 0) } ] }"
+  symbol: "enter"
+  clock_constraints {
+    clock: "c"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "t"
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, NEAR), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), (sink, 0) }, { ((CLOSED, NEAR), c, 1) } ] }"
+  target: "{ [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 3) } ] }"
+  symbol: "enter"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "c"
+    comparand: 2
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "t"
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSED, NEAR), t, 0), ((start_open ~U !(leave)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), ((travel ~U !(finish_open)), 4) }, { ((CLOSED, NEAR), c, 1) } ], [ { ((CLOSED, NEAR), t, 0), (sink, 0) }, { ((CLOSED, NEAR), c, 1) } ] }"
+  target: "{ [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((start_open ~U !(leave)), 5) } ], [ { ((CLOSED, IN), t, 0) }, { ((CLOSED, IN), c, 3) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((CLOSED, IN), t, 0), (sink, 0) }, { ((CLOSED, IN), c, 3) } ] }"
+  symbol: "enter"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "c"
+    comparand: 2
+  }
+  clock_constraints {
+    clock: "t"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), (((enter \342\210\250 (\342\212\244 U[0, 1] enter)) ~U !(finish_close)), 1) } ], [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), ((start_open ~U !(leave)), 1) } ], [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), ((travel ~U !(finish_open)), 1) } ] }"
+  target: "{ [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((start_open ~U !(leave)), 3) } ], [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 3), ((travel ~U !(finish_open)), 3) } ], [ { ((CLOSED, FAR), c, 0), (sink, 0) }, { ((CLOSED, FAR), t, 3) } ] }"
+  symbol: "finish_close"
+  clock_constraints {
+    clock: "c"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    comparand: 2
+  }
+}
+transitions {
+  source: "{ [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 5) } ], [ { ((CLOSING, FAR), c, 0), (sink, 0) }, { ((CLOSING, FAR), t, 5) } ] }"
+  target: "{ [ { ((CLOSED, FAR), c, 0) }, { ((CLOSED, FAR), t, 5) } ], [ { ((CLOSED, FAR), c, 0), (sink, 0) }, { ((CLOSED, FAR), t, 5) } ] }"
+  symbol: "finish_close"
+  clock_constraints {
+    clock: "c"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+    comparand: 2
+  }
+}
+transitions {
+  source: "{ [ { ((OPEN, FAR), c, 0) }, { ((OPEN, FAR), t, 5) } ], [ { ((OPEN, FAR), c, 0), (sink, 0) }, { ((OPEN, FAR), t, 5) } ] }"
+  target: "{ [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 5) } ], [ { ((CLOSING, FAR), c, 0), (sink, 0) }, { ((CLOSING, FAR), t, 5) } ] }"
+  symbol: "start_close"
+  clock_constraints {
+    clock: "c"
+    operand: EQUAL_TO
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+    comparand: 2
+  }
+}
+transitions {
+  source: "{ [ { ((OPEN, FAR), c, 0), ((OPEN, FAR), t, 0), (l0, 0) } ] }"
+  target: "{ [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), (((enter \342\210\250 (\342\212\244 U[0, 1] enter)) ~U !(finish_close)), 1) } ], [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), ((start_open ~U !(leave)), 1) } ], [ { ((CLOSING, FAR), c, 0) }, { ((CLOSING, FAR), t, 1), ((travel ~U !(finish_open)), 1) } ] }"
+  symbol: "start_close"
+  clock_constraints {
+    clock: "c"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "c"
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+  }
+  clock_constraints {
+    clock: "t"
+    comparand: 1
+  }
+}
+transitions {
+  source: "{ [ { ((OPENING, BEHIND), c, 0) }, { ((OPENING, BEHIND), t, 1) }, { ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, BEHIND), c, 0), (sink, 0) }, { ((OPENING, BEHIND), t, 1) } ] }"
+  target: "{ [ { ((OPEN, BEHIND), c, 0), (sink, 0) }, { ((OPEN, BEHIND), t, 3) } ] }"
+  symbol: "finish_open"
+  clock_constraints {
+    clock: "c"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    comparand: 2
+  }
+}
+transitions {
+  source: "{ [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5) } ], [ { ((OPENING, FAR), c, 0) }, { ((OPENING, FAR), t, 5), ((travel ~U !(finish_open)), 5) } ], [ { ((OPENING, FAR), c, 0), (sink, 0) }, { ((OPENING, FAR), t, 5) } ] }"
+  target: "{ [ { ((OPEN, FAR), c, 0) }, { ((OPEN, FAR), t, 5) } ], [ { ((OPEN, FAR), c, 0), (sink, 0) }, { ((OPEN, FAR), t, 5) } ] }"
+  symbol: "finish_open"
+  clock_constraints {
+    clock: "c"
+    operand: EQUAL_TO
+    comparand: 1
+  }
+  clock_constraints {
+    clock: "t"
+    operand: GREATER
+    comparand: 2
+  }
+}

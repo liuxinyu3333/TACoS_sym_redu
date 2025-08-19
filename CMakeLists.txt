@@ -35,6 +35,28 @@ if (TACOS_COVERAGE)
 	append_coverage_compiler_flags()
 endif ()
 
+
+
+
+# 让 CMake 查找 Bliss 头文件和库文件
+include_directories("/home/xinyuliu/bliss-0.77/src")
+link_directories("/home/xinyuliu/bliss-0.77/build")
+
+# 使用 find_library 让 CMake 识别 Bliss 库
+find_library(BLISS_LIB bliss HINTS "/home/xinyuliu/bliss-0.77/build")
+
+if(NOT BLISS_LIB)
+    message(FATAL_ERROR "Bliss library not found in /home/xinyuliu/bliss-0.77/build")
+else()
+    message(STATUS "Found Bliss library: ${BLISS_LIB}")
+endif()
+
+# 将 Bliss 库存储为全局属性，确保子项目可见
+set(BLISS_INCLUDE_DIR "/home/xinyuliu/bliss-0.77/src" CACHE INTERNAL "Bliss include directory")
+set(BLISS_LIBRARY ${BLISS_LIB} CACHE INTERNAL "Bliss library file")
+
+
+
 add_subdirectory(src)
 
 if (BUILD_TESTING)

@@ -32,7 +32,7 @@
 #include <memory>
 #include <queue>
 #include <variant>
-
+#include <type_traits>
 /** @brief The search algorithm.
  *
  * This namespace contains the search algorithm that searches for a controller.
@@ -181,7 +181,9 @@ template <typename Location,
           bool use_location_constraints = false,
           typename Plant =
             automata::ta::TimedAutomaton<typename Location::UnderlyingType, ActionType>,
-          bool use_set_semantics = false>
+          bool use_set_semantics = false,
+		  bool withSym =false
+		  >
 class TreeSearch
 {
 public:
@@ -195,7 +197,9 @@ public:
 	    std::void_t<void>>::type;
 	/** The corresponding Node type of this search. */
 	using Node = SearchTreeNode<Location, ActionType, ConstraintSymbolType>;
-
+	//using QuoNode = SearchTreeNode<QuoLocation, ActionType, ConstraintSymbolType>;
+	using loc_typ = tacos::automata::ta::Location<std::vector<std::string>>;
+	using tran_typ = tacos::automata::ta::Transition<std::vector<std::string>, std::string>;
 	/** Initialize the search.
 	 * @param ta The plant to be controlled
 	 * @param ata The specification of undesired behaviors
@@ -217,14 +221,25 @@ public:
 	  bool                                   incremental_labeling = false,
 	  bool                                   terminate_early      = false,
 	  std::unique_ptr<Heuristic<long, Node>> search_heuristic =
-	    std::make_unique<BfsHeuristic<long, Node>>())
+	    std::make_unique<BfsHeuristic<long, Node>>(),
+
+
+	  std::shared_ptr<Node> sym_tree_root_ = nullptr,
+      bool with_sym_tree  = false,
+	  std::map<loc_typ, std::vector<loc_typ>> loc_map_param = {},
+	  std::map<tran_typ, std::vector<tran_typ>> trans_map_param = {})
 	: ta_(ta),
 	  ata_(ata),
 	  controller_actions_(controller_actions),
 	  environment_actions_(environment_actions),
 	  K_(K),
 	  incremental_labeling_(incremental_labeling),
-	  terminate_early_(terminate_early)
+	  terminate_early_(terminate_early),
+
+	  with_sym_tree(with_sym_tree),
+	  sym_tree_root_(sym_tree_root_),
+	  loc_map(loc_map_param),
+	  trans_map(trans_map_param)
 	{
 		static_assert(use_location_constraints || std::is_same_v<ActionType, ConstraintSymbolType>);
 		// Assert that the two action sets are disjoint.
@@ -255,12 +270,22 @@ public:
 			                       ata->get_initial_configuration(),
 			                       K)});
 		}
+
+		if (with_sym_tree) {
+			sym_node_map_[tree_root_.get()] = sym_tree_root_.get();
+		}
 		nodes_                                  = {{{}, tree_root_}};
 		heuristic                               = std::move(search_heuristic);
 		tree_root_->min_total_region_increments = 0;
 		add_node_to_queue(tree_root_.get());
 	}
 
+
+	// ~TreeSearch() {
+	// 	// 在这里做必要的清理
+	// 	// 例如如果 pool_ 还有后台线程，可以先停止它：
+	// 	pool_.cancel();   
+	//   }
 	/** Get the root of the search tree.
 	 * @return A pointer to the root, only valid as long as the TreeSearch object has not been
 	 * destroyed
@@ -271,6 +296,10 @@ public:
 		return tree_root_.get();
 	}
 
+	// std::shared_ptr<Node> 
+	// get_shared_root const{
+	// 	return tree_root_;
+	// }
 	/** Check if a node is bad, i.e., if it violates the specification.
 	 * @param node A pointer to the node to check
 	 * @return true if the node is bad
@@ -377,7 +406,12 @@ public:
 		std::set<Node *> new_children;
 		std::set<Node *> existing_children;
 		if (node->get_children().empty()) {
-			std::tie(new_children, existing_children) = compute_children(node);
+			if constexpr (withSym){
+				std::tie(new_children, existing_children) = compute_children_sym(node);
+			}else{
+				std::tie(new_children, existing_children) = compute_children(node);
+
+			}
 		}
 
 		node->is_expanded  = true;
@@ -447,12 +481,251 @@ public:
 	}
 
 private:
+	
+	// std::pair<std::set<Node *>, std::set<Node *>>
+	// compute_children_quotient(Node *node){
+
+	// 	auto *qnode = sym_node_map_.at(node);
+	// 	   // 2) 从 qnode 拿到所有〈Δt,action〉→QuoNode*
+	// 	std::map<std::pair<RegionIndex,ActionType>, QuoNode*> sym_kids;
+	// 	for (auto const &e : qnode->get_children()){
+	// 		sym_kids.emplace(e.first, e.second.get());
+	// 	}
+
+	// 	// 3) 按照商树的每条边，用 special 获取原始 canonical words
+	// 	std::map<std::pair<RegionIndex,ActionType>,
+	// 			std::set<CanonicalABWord<Location,ConstraintSymbolType>>> child_classes;
+	// 	for (auto const & [key, qchild] : sym_kids) {
+	// 		auto [increment, symbol] = key;
+	// 		auto succs =
+	// 			get_next_canonical_words<Plant, ActionType, ConstraintSymbolType,
+	// 									use_location_constraints, use_set_semantics>(
+	// 			controller_actions_,
+	// 			environment_actions_,
+	// 			loc_map,
+	// 			trans_map)(
+	// 			*ta_, *ata_,
+	// 			std::make_pair(get_candidate(qchild->words), qchild->get_ata_configuration()),
+	// 			increment,
+	// 			K_);
+	// 		for (auto const &p : succs){
+	// 			child_classes[key].insert(p.second);
+	// 		}
+	// 	}
+
+	// 	// 4) 同原逻辑创建／复用节点，并映射到商树子节点
+	// 	std::set<Node*>     newc, oldc;
+	// 	{
+	// 	std::lock_guard lock{nodes_mutex_};
+	// 	for (auto const & [key, words] : child_classes) {
+	// 		auto [it, inserted] = nodes_.emplace(words, std::make_shared<Node>(words));
+	// 		auto child = it->second;
+	// 		node->add_child(key, child);
+	// 		sym_node_map_[child.get()] = sym_kids.at(key);
+	// 		(inserted ? newc : oldc).insert(child.get());
+	// 	}
+	// 	}
+	// 	return {newc, oldc};
+	// }
+
+
+	// 放在 TreeSearch<…,QuoLoc> 类的 private: 区域
+	std::set<Location> extractAllQuoLocs(Node *n) {
+		std::set<Location> result;
+
+		// 遍历节点里的每个 CanonicalABWord
+		for (auto const &word : n->words) {
+			// 只保留 Plant 部分
+			auto plantWord = reg_a(word);
+			// plantWord 是 vector< set<ABRegionSymbol> >
+			for (auto const &partition : plantWord) {
+				for (auto const &sym : partition) {
+					// 如果它是 PlantRegionState<QuoLoc>
+					if (auto prs = std::get_if<PlantRegionState<Location>>(&sym)) {
+						result.insert(prs->location);
+					}
+				}
+			}
+		}
+		return result;
+	}
+	std::pair<std::set<Node *>, std::set<Node *>>
+	compute_children_sym(Node *node)
+	{
+		if (node == nullptr) {
+			return {};
+		}
+		assert(node->get_children().empty());
+		std::set<Node *> new_children;
+		std::set<Node *> existing_children;
+		std::cout<<"======================"<<std::endl;
+		std::cout<<"树源节点："<<*node<<std::endl;
+		auto *qnode = sym_node_map_.at(node);
+		std::cout<<""<<std::endl;
+		std::cout<<"商树源节点： "<<sym_node_map_.at(node)<<std::endl;
+		std::cout<<""<<std::endl;
+		std::cout<<"商树节点值： "<<*qnode<<std::endl;
+
+		auto src_loc = extractAllQuoLocs(qnode);
+		auto org_src_loc = extractAllQuoLocs(node);
+
+		if (org_src_loc.size()>1){
+			throw std::invalid_argument(fmt::format("One TA configuration have more than one location!"));
+		}
+
+		for (const auto &l: org_src_loc){
+			std::cout<<l<<" ";
+		}
+		std::cout<<""<<std::endl;
+		// 2) 从 qnode 拿到所有〈Δt,action〉→QuoNode*
+		// std::map<std::pair<RegionIndex, ActionType>,
+		// 	std::set<CanonicalABWord<Location, ConstraintSymbolType>>>
+		// 	global_child_classes;
+		//assert(qnode->get_children().empty());
+		if (qnode == nullptr) {
+			return {};
+		}
+		for (const auto &e : qnode->get_children()){
+			
+			auto tgt_loc = extractAllQuoLocs(e.second.get());
+			auto [increment, symbol] = e.first;
+			
+			std::cout<<"increment: "<<increment<<", symbol: "<<symbol<<", successor: "<<e.second<< "  \n" << * e.second <<std::endl;
+
+			std::cout<<""<<std::endl;
+			std::set<tran_typ> org_trans;
+			std::set<ActionType> symbols;
+			
+			for (auto &s : src_loc){
+				std::cout<<"搜索树源节点中的ta位置："<<s<<std::endl;
+				for (auto &t :tgt_loc){
+					//std::cout<<"搜索树目标节点位置："<<t<<std::endl;
+					for (const auto &tran_orbit: trans_map){
+						const auto &tran_rep = tran_orbit.first;
+						
+						if (tran_rep.target_.get() == t.get() &&
+							tran_rep.source_.get() == s.get() &&
+							tran_rep.symbol_ == symbol){
+								std::cout<<"transition: "<< tran_rep<<std::endl;
+							for (const auto &tran : tran_orbit.second){
+								std::cout<<"transition orbits: "<< tran<<std::endl;
+								for (const auto &l: org_src_loc){
+									if (tran.source_ == l){
+										org_trans.insert(tran);
+										symbols.insert(tran.get_label());
+									}
+								}
+								
+							}
+
+							auto loc = tran_rep.target_;
+							for (const auto &l: loc_map){
+								if (l.first == loc){
+									std::cout<<"loc rep: "<<l.first<<std::endl;
+									for (const auto &lo: l.second){
+										std::cout<<"loc orb: "<<lo<<std::endl;
+									}
+								}
+							}
+						}
+						// org_trans.insert(tran_rep);
+						// symbols.insert(tran_rep.get_label());
+					}
+				}
+			}
+
+			//std::cout<<""<<std::endl;
+
+			// for(const auto& action : symbols){
+			// 	std::cout<<"动作： "<<action <<std::endl;
+			// }
+			std::map<std::pair<RegionIndex, ActionType>,
+			std::set<CanonicalABWord<Location, ConstraintSymbolType>>>
+			child_classes;
+			std::cout<<"排查问题 1 " <<std::endl;
+			const auto time_successors = get_time_successors(node->words, K_);
+			//for (std::size_t increment = 0; increment < time_successors.size(); ++increment) {
+				std::cout<<"排查问题 2 " <<std::endl;
+				for (const auto &time_successor : time_successors[increment]) {
+					
+					const auto candidate = get_candidate(time_successor);
+					std::cout<<"排查问题 3 "<< candidate.first <<std::endl;
+					//std::set<ActionType> symbols;
+					// for(auto &tran : org_trans){
+					// 	if (tran.get_source() == candidate.first.location){
+					// 		symbols.insert(tran.get_label());
+					// 	}
+					// }
+					auto successors =
+					get_next_canonical_words<Plant,
+											ActionType,
+											ConstraintSymbolType,
+											use_location_constraints,
+											use_set_semantics>(controller_actions_, environment_actions_, symbols)(
+					*ta_, *ata_, candidate, increment, K_);
+					
+					
+					for (const auto &[symbol, successor] : successors) {
+						assert(
+						std::find(std::begin(controller_actions_), std::end(controller_actions_), symbol)
+							!= std::end(controller_actions_)
+						|| std::find(std::begin(environment_actions_), std::end(environment_actions_), symbol)
+							!= std::end(environment_actions_));
+
+						//std::cout<<"increment: "<<increment<<", symbol: "<<symbol<<", successor: "<<successor<<std::endl;
+						child_classes[std::make_pair(increment, symbol)].insert(successor);
+					}
+				}
+			//}
+	
+
+			// Create child nodes, where each child contains all successors words of
+			// the same reg_a class.
+			{
+				std::lock_guard lock{nodes_mutex_};
+				for (const auto &[timed_action, words] : child_classes) {
+					std::cout<<"child class ** increment: "<<timed_action.first<<", symbol: "<<timed_action.second<<", successor: "<<words<<std::endl;
+					std::cout<<""<<std::endl;
+					auto [child_it, is_new] = nodes_.insert({words, std::make_shared<Node>(words)});
+					const std::shared_ptr<Node> &child_ptr = child_it->second;
+					sym_node_map_[child_ptr.get()] = e.second.get();
+				
+					std::cout<<""<<std::endl;
+					auto cp = child_ptr.get();
+					std::cout<<"计算出的原ta的叶子节点指针: "<<cp<<std::endl;
+					std::cout<<""<<std::endl;
+					std::cout<<"计算出的原ta的叶子节点内容: "<<*cp<<std::endl;
+					auto es = e.second.get();
+					std::cout<<"对应的商ta的叶子节点指针： "<<es<<std::endl;
+					std::cout<<""<<std::endl;
+					std::cout<<"对应的商ta的叶子节点内容: "<<*es<<std::endl;
+					std::cout<<""<<std::endl;					
+					std::cout<<""<<std::endl;
+
+					node->add_child(timed_action, child_ptr);
+					SPDLOG_TRACE("Action ({}, {}): Adding child {}",
+								timed_action.first,
+								timed_action.second,
+								words);
+					if (is_new) {
+						new_children.insert(child_ptr.get());
+					} else {
+						existing_children.insert(child_ptr.get());
+					}
+				}
+			}
+	
+		}
+		return {new_children, existing_children};
+	}
+
 	std::pair<std::set<Node *>, std::set<Node *>>
 	compute_children(Node *node)
 	{
 		if (node == nullptr) {
 			return {};
 		}
+		//std::cout<<node->words<<std::endl;
 		assert(node->get_children().empty());
 		std::map<std::pair<RegionIndex, ActionType>,
 		         std::set<CanonicalABWord<Location, ConstraintSymbolType>>>
@@ -461,6 +734,8 @@ private:
 		const auto time_successors = get_time_successors(node->words, K_);
 		for (std::size_t increment = 0; increment < time_successors.size(); ++increment) {
 			for (const auto &time_successor : time_successors[increment]) {
+				std::cout<<"  "<<std::endl;
+				std::cout<<"increment: "<<increment<<"; time_successor: "<<time_successor<<std::endl;
 				auto successors =
 				  get_next_canonical_words<Plant,
 				                           ActionType,
@@ -469,6 +744,7 @@ private:
 				                           use_set_semantics>(controller_actions_, environment_actions_)(
 				    *ta_, *ata_, get_candidate(time_successor), increment, K_);
 				for (const auto &[symbol, successor] : successors) {
+					std::cout<<"symbol: "<<symbol<<" ; successor： "<<successor<<std::endl;
 					assert(
 					  std::find(std::begin(controller_actions_), std::end(controller_actions_), symbol)
 					    != std::end(controller_actions_)
@@ -476,6 +752,7 @@ private:
 					       != std::end(environment_actions_));
 					child_classes[std::make_pair(increment, symbol)].insert(successor);
 				}
+				std::cout<<"  "<<std::endl;
 			}
 		}
 
@@ -502,7 +779,6 @@ private:
 		}
 		return {new_children, existing_children};
 	}
-
 	const Plant *const ta_;
 	const automata::ata::AlternatingTimedAutomaton<logic::MTLFormula<ConstraintSymbolType>,
 	                                               logic::AtomicProposition<ATAInputType>>
@@ -514,12 +790,21 @@ private:
 	const bool                 incremental_labeling_;
 	const bool                 terminate_early_{false};
 
+	const bool				   with_sym_tree;
+	std::shared_ptr<Node>      sym_tree_root_;
+	std::map<loc_typ, std::vector<loc_typ>>   loc_map;
+    std::map<tran_typ, std::vector<tran_typ>> trans_map;
+	std::unordered_map<Node*, Node*>   sym_node_map_;
+
+
 	mutable std::mutex    nodes_mutex_;
 	std::shared_ptr<Node> tree_root_;
 	std::map<std::set<CanonicalABWord<Location, ConstraintSymbolType>>, std::shared_ptr<Node>> nodes_;
 	utilities::ThreadPool<long> pool_{utilities::ThreadPool<long>::StartOnInit::NO};
 	std::unique_ptr<Heuristic<long, SearchTreeNode<Location, ActionType, ConstraintSymbolType>>>
 	  heuristic;
+
+	  
 };
 
 } // namespace tacos::search

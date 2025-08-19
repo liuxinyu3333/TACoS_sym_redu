@@ -14,7 +14,7 @@
 #include <filesystem>
 #include <optional>
 #include <string>
-
+#include <vector>
 // cgraph defines those, do not leak the definitions.
 #undef TRUE
 #undef FALSE
@@ -138,6 +138,7 @@ private:
 	bool        layout_created{false};
 	std::size_t last_node_id{0};
 	std::size_t last_edge_id{0};
+	std::vector<Node>    nodes_;
 };
 
 } // namespace tacos::utilities::graphviz

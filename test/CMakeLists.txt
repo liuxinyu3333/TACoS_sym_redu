@@ -3,10 +3,17 @@ if(TACOS_COVERAGE)
 endif()
 
 add_library(railroad SHARED railroad.cpp)
-target_link_libraries(railroad PUBLIC automata search mtl visualization)
+target_link_libraries(railroad PUBLIC automata search mtl visualization ta_to_graph_symmetry )
 
 add_library(railroad_location SHARED railroad_location.cpp)
 target_link_libraries(railroad_location PUBLIC automata search mtl visualization)
+
+add_library(railroad_parallel SHARED railroad_parallel.cpp)
+target_link_libraries(railroad_parallel PUBLIC automata search mtl visualization ta_to_graph_symmetry )
+
+add_library(railroad_parallel_simple SHARED railroad_parallel_simple.cpp)
+target_link_libraries(railroad_parallel_simple PUBLIC automata search mtl visualization ta_to_graph_symmetry )
+
 
 add_library(fischer SHARED fischer.cpp)
 target_link_libraries(fischer PUBLIC automata search)
@@ -66,7 +73,7 @@ target_link_libraries(test_search PRIVATE mtl_ata_translation search visualizati
 catch_discover_tests(test_search)
 
 add_executable(test_railroad test_railroad.cpp)
-target_link_libraries(test_railroad PRIVATE railroad mtl_ata_translation search Catch2::Catch2WithMain)
+target_link_libraries(test_railroad PRIVATE railroad railroad_parallel_simple railroad_parallel mtl_ata_translation search Catch2::Catch2WithMain ta_to_graph_symmetry)
 catch_discover_tests(test_railroad)
 
 add_executable(test_railroad_location test_railroad_location.cpp)
@@ -127,6 +134,8 @@ endif()
 
 if(TARGET visualization)
   add_executable(test_tree_visualization test_tree_visualization.cpp)
+  target_compile_options(test_tree_visualization PRIVATE -Wno-error)
+
   target_link_libraries(test_tree_visualization PRIVATE visualization Catch2::Catch2WithMain)
   catch_discover_tests(test_tree_visualization)
 

@@ -5,6 +5,7 @@ add_subdirectory(utilities)
 add_subdirectory(search)
 add_subdirectory(visualization)
 add_subdirectory(app)
+add_subdirectory(ta_to_graph_symmetry)
 
 if(TACOS_GOCOS)
   add_subdirectory(golog_adapter)

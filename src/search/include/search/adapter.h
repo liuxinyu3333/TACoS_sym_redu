@@ -32,7 +32,8 @@ public:
 	 * @param environment_actions The actions that the environment can select
 	 */
 	get_next_canonical_words([[maybe_unused]] const std::set<ActionType> &controller_actions  = {},
-	                         [[maybe_unused]] const std::set<ActionType> &environment_actions = {})
+	                         [[maybe_unused]] const std::set<ActionType> &environment_actions = {},
+							 [[maybe_unused]] const std::set<ActionType> &symbols = {})
 	{
 	}
 	/** Get all successors for one particular time successor. */

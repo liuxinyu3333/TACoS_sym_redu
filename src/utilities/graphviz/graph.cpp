@@ -59,6 +59,16 @@ Graph::add_node(std::string label, std::optional<std::string> identifier)
 		auto next_id = ++last_node_id;
 		id           = std::to_string(next_id);
 	}
+
+	// Agnode_t *ag_node = agnode(graph, id.data(), /*create=*/1);
+	
+    // // 把它存到 nodes_ 里，保证不被临时对象析构干掉
+	// nodes_.emplace_back(ag_node);
+	// Node &persistent_node = nodes_.back();
+	// persistent_node.set_property("label", label);
+	
+	//    // 返回一份副本（wrapper 里只保存了指针，不会在析构时删节点）
+	// return persistent_node;
 	auto ag_node = agnode(graph, id.data(), 1);
 	Node node{ag_node};
 	node.set_property("label", label);

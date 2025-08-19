@@ -66,6 +66,10 @@ public:
 	SearchTreeNode(const std::set<CanonicalABWord<Location, ConstraintSymbolType>> &words)
 	: words(words)
 	{
+		std::cout<<""<<std::endl;
+		std::cout<<words<<std::endl;
+		std::cout<<""<<std::endl;
+
 		// The constraints must be either over locations or over actions.
 		static_assert(std::is_same_v<Location, ConstraintSymbolType>
 		              || std::is_same_v<ActionType, ConstraintSymbolType>);
@@ -275,6 +279,7 @@ public:
 	add_child(const std::pair<RegionIndex, ActionType> &action, std::shared_ptr<SearchTreeNode> node)
 	{
 		if (!children.insert(std::make_pair(action, node)).second) {
+			std::cout<<"当前节点： "<<this<<" 已有后继： "<<node<<" 相同动作后继："<< children.at(action)<<std::endl;
 			throw std::invalid_argument(fmt::format("\n{}\nCannot add child node \n{}\n, node already "
 			                                        "has child \n{}\n with the same action ({}, {})",
 			                                        *this,
